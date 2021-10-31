@@ -8,6 +8,10 @@ const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 const { VueLoaderPlugin } = require('vue-loader')
 
+function resolve(filePath) {
+  return path.resolve(__dirname, '..', filePath)
+}
+
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
@@ -27,7 +31,13 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: "babel-loader"
+            loader: "thread-loader",
+            options: {
+              workers: 2
+            }
+          },
+          {
+            loader: "babel-loader?cacheDirectory=true"
           }
         ]
       },
@@ -125,7 +135,11 @@ module.exports = {
     extensions: ['.js', '.vue'],  
     alias: {
       '@': path.resolve(__dirname, '../src')
-    }
+    },
+    modules: [
+      resolve( './node_modules'),
+      'node_modules'
+    ]
   },
   externals: {
     vue: 'Vue'
