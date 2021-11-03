@@ -5,11 +5,12 @@ const webpack = require('webpack')
 
 const resolve = p => path.resolve(__dirname, '../', p)
 
-const commonConfig = require('./webpack.common.config')
-const developmentConfig =  {
+const baseConfig = require('./webpack.base.config')
+
+module.exports = merge(baseConfig, {
   mode: 'development',
   output: {
-    filename: '[name].js',
+    filename: 'static/js/[name].js',
     path: resolve('dist'),
     publicPath: '/'
   },
@@ -34,20 +35,9 @@ const developmentConfig =  {
         }
       }
     ),
-    new HtmlWebpackPlugin(
-      {
-        minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeAttributeQuotes: true,
-          collapseBooleanAttributes: true,
-          removeScriptTypeAttributes: true
-        },
-        template: resolve('public/index.html')
-      }
-    ),
+    new HtmlWebpackPlugin({
+      template: resolve('public/index.html'),
+      inject: 'body'
+    })
   ]
-}
-
-const webpackConfig = merge(commonConfig, developmentConfig);
-module.exports =  webpackConfig
+})

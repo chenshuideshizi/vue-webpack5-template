@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -11,14 +10,18 @@ const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugi
 const { VueLoaderPlugin } = require('vue-loader');
 const webpack = require('webpack');
 
-function resolve(filePath) {
-  return path.resolve(__dirname, '..', filePath)
+function resolve(p) {
+  return path.resolve(__dirname, '..', p)
 }
 
 module.exports = {
+  performance: {
+    maxAssetSize: 100000000,
+    maxEntrypointSize: 400000000
+  },
   context: path.resolve(__dirname, '../'),
   entry: {
-    main: './src/main.js'
+    app: './src/main.js'
     // vendor: ['vue', 'vue-router', 'vuex', 'element-ui', 'lodash']
   },
   resolve: {
@@ -32,7 +35,7 @@ module.exports = {
     ]
   },
   module: {
-    noParse: /^(vue|vue-router|vuex|vuex-router-sync)$/,
+    // noParse: /^(vue|vue-router|vuex|vuex-router-sync)$/,
     rules: [
       {
         test: /\.vue$/,
@@ -97,10 +100,7 @@ module.exports = {
           {
             use: [
               {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                  publicPath: resolve('static/style')
-                }
+                loader: MiniCssExtractPlugin.loader
               },
               {
                 loader: 'css-loader',
@@ -109,12 +109,12 @@ module.exports = {
                   importLoaders: 2
                 }
               },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  sourceMap: false
-                }
-              }
+              // {
+              //   loader: 'postcss-loader',
+              //   options: {
+              //     sourceMap: false
+              //   }
+              // }
             ]
           }
         ]
@@ -126,10 +126,7 @@ module.exports = {
           {
             use: [
               {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                  publicPath: resolve('static/style')
-                }
+                loader: MiniCssExtractPlugin.loader
               },
               {
                 loader: 'css-loader',
@@ -138,12 +135,12 @@ module.exports = {
                   importLoaders: 2
                 }
               },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  sourceMap: false
-                }
-              },
+              // {
+              //   loader: 'postcss-loader',
+              //   options: {
+              //     sourceMap: false
+              //   }
+              // },
               {
                 loader: 'sass-loader',
                 options: {
@@ -178,22 +175,16 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new NodePolyfillPlugin(),  // Polyfill Node.js core modules in Webpack. This module is only needed for webpack 5+.
-    /* config.plugin('vue-loader') */
     new VueLoaderPlugin(),
-
-    /* config.plugin('case-sensitive-paths') */
     new CaseSensitivePathsPlugin(),
-    /* config.plugin('friendly-errors') */
     new FriendlyErrorsWebpackPlugin({}),
-    /* config.plugin('hmr') */
     new webpack.HotModuleReplacementPlugin(),
-    /* config.plugin('progress') */
     new webpack.ProgressPlugin(),
-    /* config.plugin('html') */
-    new HtmlWebpackPlugin(
+    new MiniCssExtractPlugin(
       {
-        templateParameters: function () { /* omitted long function */ },
-        template: resolve('public/index.html')
+        filename: 'static/css/[name].[contenthash:8].css',
+        chunkFilename: 'static/css/[name].[contenthash:8].css',
+        ignoreOrder: true
       }
     ),
     /* config.plugin('copy') */
@@ -205,7 +196,8 @@ module.exports = {
           toType: 'dir',
           globOptions: {
             ignore: [
-              '.DS_Store'
+              '.DS_Store',
+              '**/index.html'
             ]
           }
         }
@@ -213,7 +205,7 @@ module.exports = {
     })
   ],
   externals: {
-    vue: 'Vue'
+    // vue: 'Vue'
   },
   optimization: {
     // minimizer: [
