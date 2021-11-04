@@ -7,9 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "dev": "webpack --config  ./build/webpack.dev.config.js",
-    "build": "webpack --config  ./build/webpack.prod.config.js",
-    "serve": "npx webpack serve --config  ./build/webpack.development.config.js"
+    "dev": "webpack-dev-server --config  ./build/webpack.dev.config.js",
+    "build": "webpack --config ./build/webpack.prod.config.js",
+    "serve": "npx webpack serve --config  ./build/webpack.dev.config.js"
   },
   "keywords": [],
   "author": "",
@@ -22,9 +22,9 @@
     "@vue/cli-plugin-babel": "^4.5.15",
     "babel-loader": "^8.2.3",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
-    "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^9.0.1",
     "core-js": "^3.19.1",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.5.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.2",

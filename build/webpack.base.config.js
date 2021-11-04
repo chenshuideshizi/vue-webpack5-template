@@ -1,5 +1,4 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
@@ -14,11 +13,16 @@ const webpack = require('webpack');
 
 const devMode = process.env.NODE_ENV !== "production"
 
+console.log(process.env)
+
 function resolve(p) {
   return path.resolve(__dirname, '..', p)
 }
 
 module.exports = {
+  cache: {
+    type: "filesystem", // 使用文件缓存
+  },
   performance: {
     maxAssetSize: 100000000,
     maxEntrypointSize: 400000000
@@ -37,6 +41,7 @@ module.exports = {
   },
   devtool: devMode ? 'source-map' : false,
   resolve: {
+    symlinks: false,
     extensions: ['.js', '.vue'],  
     alias: {
       '@': path.resolve(__dirname, '../src')
@@ -52,13 +57,6 @@ module.exports = {
       {
         test: /\.vue$/,
         use: [
-          {
-            loader: 'cache-loader',
-            options: {
-              cacheDirectory: resolve('.cache/vue-loader'),
-              cacheIdentifier: '154cb8fb'
-            }
-          },
           {
             loader: 'vue-loader',
             options: {
@@ -156,33 +154,15 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new NodePolyfillPlugin(),  // Polyfill Node.js core modules in Webpack. This module is only needed for webpack 5+.
     new VueLoaderPlugin(),
     new CaseSensitivePathsPlugin(),
     new FriendlyErrorsWebpackPlugin({}),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.ProgressPlugin(),
-    new webpack.DefinePlugin(
-      {
-        'process.env': {
-          // VUE_APP_BASE_API: '"/prod-api"',
-          // NODE_ENV: '"production"',
-          // BASE_URL: '"/"'
-        }
-      }
-    ),
     new HtmlWebpackPlugin({ // 在生成环境会启用压缩
       template: resolve('public/index.html'),
       inject: 'body'
     }),
-    devMode && new MiniCssExtractPlugin(
-      {
-        filename: 'static/css/[name].[contenthash:8].css',
-        chunkFilename: 'static/css/[name].[contenthash:8].css',
-        ignoreOrder: true
-      }
-    ),
     new CopyWebpackPlugin({
       patterns: [
         {
