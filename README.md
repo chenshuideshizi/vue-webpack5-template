@@ -1,5 +1,12 @@
 # vue-template
 
+##### sass 报错
+
+Deprecation Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+把 ```"sass": "^1.43.4"``` 改为  ```"sass": "~1.32.6"```
+
+官网解释: https://sass-lang.com/documentation/breaking-changes/slash-div
 ##### 省略文件后缀名
 ```
 resolve: {
