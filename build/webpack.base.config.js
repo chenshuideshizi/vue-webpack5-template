@@ -18,8 +18,6 @@ function resolve(p) {
   return path.resolve(__dirname, '..', p)
 }
 
-const NODE_ENV = process.env.NODE_ENV
-
 module.exports = {
   performance: {
     maxAssetSize: 100000000,
@@ -31,13 +29,13 @@ module.exports = {
     // vendor: ['vue', 'vue-router', 'vuex', 'element-ui', 'lodash']
   },
   output: {
-    filename: NODE_ENV === 'production' ? 'static/js/[name].[contenthash:8].js' : 'static/js/[name].js' ,
+    filename: devMode ? 'static/js/[name].js' : 'static/js/[name].[contenthash:8].js',
     path: resolve('dist'),
     publicPath: '/',
     chunkFilename: 'static/js/[name].[contenthash:8].js',
     assetModuleFilename: 'images/[hash][ext][query]'
   },
-  devtool: NODE_ENV === 'production' ? false : 'source-map',
+  devtool: devMode ? 'source-map' : false,
   resolve: {
     extensions: ['.js', '.vue'],  
     alias: {
@@ -200,5 +198,34 @@ module.exports = {
         }
       ]
     })
-  ]
+  ],
+  optimization: {
+    minimizer: [
+      new CssMinimizerPlugin() // webpack@5 仅在生产环境开启 CSS 优化
+    ],
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        libs: {
+          name: 'chunk-libs',
+          test: /[\\/]node_modules[\\/]/,
+          priority: 10,
+          chunks: 'initial'
+        },
+        elementUI: {
+          name: 'chunk-elementUI',
+          priority: 20,
+          test: /[\\/]node_modules[\\/]_?element-ui(.*)/
+        },
+        commons: {
+          name: 'chunk-commons',
+          test: resolve('components'),
+          minChunks: 3,
+          priority: 5,
+          reuseExistingChunk: true
+        }
+      }
+    },
+    runtimeChunk: 'single'
+  }
 }
