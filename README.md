@@ -1,6 +1,5 @@
 # vue-template
 
-
 ##### 省略文件后缀名
 ```
 resolve: {

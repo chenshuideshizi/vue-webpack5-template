@@ -106,12 +106,12 @@ module.exports = {
                   importLoaders: 2
                 }
               },
-              // {
-              //   loader: 'postcss-loader',
-              //   options: {
-              //     sourceMap: false
-              //   }
-              // }
+              {
+                loader: 'postcss-loader',
+                options: {
+                  sourceMap: false
+                }
+              }
             ]
           }
         ]
@@ -129,12 +129,12 @@ module.exports = {
                   importLoaders: 2
                 }
               },
-              // {
-              //   loader: 'postcss-loader',
-              //   options: {
-              //     sourceMap: false
-              //   }
-              // },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  sourceMap: false
+                }
+              },
               {
                 loader: 'sass-loader',
                 options: {
