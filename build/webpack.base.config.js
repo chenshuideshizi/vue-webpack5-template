@@ -12,6 +12,8 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
 const { VueLoaderPlugin } = require('vue-loader');
 const webpack = require('webpack');
 
+const devMode = process.env.NODE_ENV !== "production"
+
 function resolve(p) {
   return path.resolve(__dirname, '..', p)
 }
@@ -98,10 +100,7 @@ module.exports = {
         oneOf: [
           {
             use: [
-              // 'vue-style-loader',
-              {
-                loader: MiniCssExtractPlugin.loader
-              },
+              devMode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
               {
                 loader: 'css-loader',
                 options: {
@@ -122,15 +121,9 @@ module.exports = {
       { // 加载 css
         test: /\.s(a|c)ss$/,
         oneOf: [
-          /* config.module.rule('s(c|a)ss').oneOf('normal') */
           {
             use: [
-              // {
-              //   loader: MiniCssExtractPlugin.loader
-              // },
-              {
-                loader: 'vue-style-loader'
-              },
+              devMode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
               {
                 loader: 'css-loader',
                 options: {
@@ -185,11 +178,11 @@ module.exports = {
       template: resolve('public/index.html'),
       inject: 'body'
     }),
-    new MiniCssExtractPlugin(
+    devMode && new MiniCssExtractPlugin(
       {
         filename: 'static/css/[name].[contenthash:8].css',
-        chunkFilename: 'static/css/[name].[contenthash:8].css'
-        // ignoreOrder: true
+        chunkFilename: 'static/css/[name].[contenthash:8].css',
+        ignoreOrder: true
       }
     ),
     new CopyWebpackPlugin({
