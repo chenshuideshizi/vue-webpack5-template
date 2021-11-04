@@ -96,7 +96,6 @@ module.exports = {
       { // 加载 css
         test: /\.css$/,
         oneOf: [
-          /* config.module.rule('css').oneOf('normal') */
           {
             use: [
               // 'vue-style-loader',
@@ -189,8 +188,8 @@ module.exports = {
     new MiniCssExtractPlugin(
       {
         filename: 'static/css/[name].[contenthash:8].css',
-        chunkFilename: 'static/css/[name].[contenthash:8].css',
-        ignoreOrder: true
+        chunkFilename: 'static/css/[name].[contenthash:8].css'
+        // ignoreOrder: true
       }
     ),
     new CopyWebpackPlugin({
@@ -208,37 +207,5 @@ module.exports = {
         }
       ]
     })
-  ],
-  externals: {
-    // vue: 'Vue'
-  },
-  optimization: {
-    minimizer: [
-      new CssMinimizerPlugin() // webpack@5 仅在生产环境开启 CSS 优化
-    ],
-    splitChunks: {
-      chunks: 'all',
-      cacheGroups: {
-        libs: {
-          name: 'chunk-libs',
-          test: /[\\/]node_modules[\\/]/,
-          priority: 10,
-          chunks: 'initial'
-        },
-        elementUI: {
-          name: 'chunk-elementUI',
-          priority: 20,
-          test: /[\\/]node_modules[\\/]_?element-ui(.*)/
-        },
-        commons: {
-          name: 'chunk-commons',
-          test: resolve('components'),
-          minChunks: 3,
-          priority: 5,
-          reuseExistingChunk: true
-        }
-      }
-    },
-    runtimeChunk: 'single'
-  }
+  ]
 }
