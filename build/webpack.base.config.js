@@ -13,8 +13,6 @@ const webpack = require('webpack');
 
 const devMode = process.env.NODE_ENV !== "production"
 
-console.log(process.env)
-
 function resolve(p) {
   return path.resolve(__dirname, '..', p)
 }
@@ -37,7 +35,8 @@ module.exports = {
     path: resolve('dist'),
     publicPath: '/',
     chunkFilename: 'static/js/[name].[contenthash:8].js',
-    assetModuleFilename: 'images/[hash][ext][query]'
+    assetModuleFilename: 'images/[hash][ext][query]',
+    clean: true
   },
   devtool: devMode ? 'source-map' : false,
   resolve: {
@@ -154,6 +153,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      BASE_URL: ''
+    }),
     new NodePolyfillPlugin(),  // Polyfill Node.js core modules in Webpack. This module is only needed for webpack 5+.
     new VueLoaderPlugin(),
     new CaseSensitivePathsPlugin(),

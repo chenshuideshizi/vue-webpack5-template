@@ -15,13 +15,15 @@ module.exports = merge(baseConfig, {
       open: false,
       compress: true,
       static: {
-        publicPath: resolve('dist')
+        publicPath: resolve('dist'),
+        directory: resolve('dist')
       },
       hot: true,
       proxy: {
         '/api': {
-          target: 'http://www.baidu.com',
+          target: 'http://baidu.com',
           changeOrigin: true,
+          secure: false
         }
       }
   },
