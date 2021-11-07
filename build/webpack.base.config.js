@@ -21,7 +21,7 @@ module.exports = {
   cache: {
     type: "filesystem", // 使用文件缓存
   },
-  performance: {
+  performance: { // 打包性能优化提示
     maxAssetSize: 100000000,
     maxEntrypointSize: 400000000
   },
@@ -100,7 +100,8 @@ module.exports = {
                 loader: 'css-loader',
                 options: {
                   sourceMap: false,
-                  importLoaders: 2
+                  importLoaders: 2,
+                  modules: true
                 }
               },
               {
@@ -123,7 +124,8 @@ module.exports = {
                 loader: 'css-loader',
                 options: {
                   sourceMap: false,
-                  importLoaders: 2
+                  importLoaders: 2,
+                  modules: true
                 }
               },
               {

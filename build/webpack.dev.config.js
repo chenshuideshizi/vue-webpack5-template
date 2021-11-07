@@ -21,7 +21,7 @@ module.exports = merge(baseConfig, {
       hot: true,
       proxy: {
         '/api': {
-          target: 'http://baidu.com',
+          target: 'http://wwww.baidu.com',
           changeOrigin: true,
           secure: false
         }
