@@ -37,3 +37,13 @@ vue-template-compiler 需要独立安装的原因是你可以单独指定其版�
     filename: './index.html', // 输出文件【注意：这里的根路径是module.exports.output.path】
   })
 ```
+
+### 问题
+
+#### 问题1
+
+Error: Cannot find module 'acorn'
+
+#### 问题2
+
+生级 htmlWebpackPlugin
